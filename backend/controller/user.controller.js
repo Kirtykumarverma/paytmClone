@@ -83,9 +83,10 @@ const signin = async (req, res) => {
     password: zod.string(),
   });
 
-  // const { username, password } = req?.body;
-  // console.log(username, password);
+  const { username, password } = req?.body;
+  console.log(username, password);
   const { success } = signinBody.safeParse(req.body);
+  console.log("success" + success);
   if (!success) {
     throw new ApiError(411, "Incorrect Input");
   }
@@ -115,7 +116,9 @@ const signin = async (req, res) => {
   return res
     .status(200)
     .cookie("accessToken", accessToken, options)
-    .json(new ApiResponse(200, loggedInUser, "Login successfully"));
+    .json(
+      new ApiResponse(200, { loggedInUser, accessToken }, "Login successfully")
+    );
 };
 
 const updateUser = async (req, res) => {
